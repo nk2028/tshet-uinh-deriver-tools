@@ -33,6 +33,7 @@ export default class 推導方案<T> implements 推導函數<T> {
     this.defaultOptions = optionInstance.defaultOptions;
     this.optionsCount = optionInstance.optionsCount;
 
+    // FIXME `apply` works only with `Function`s
     return Object.freeze(
       new Proxy(this, {
         apply(target, ...args) {
