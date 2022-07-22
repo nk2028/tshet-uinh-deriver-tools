@@ -8,7 +8,7 @@ const 適配poem = 適配分析體系("poem");
 type 推導函數<T> = 推導方案<T>["推導"];
 
 // @ts-expect-error ts(2420)
-export default class 推導方案<T> implements 推導函數<T> {
+export default class 推導方案<T> extends Function implements 推導函數<T> {
   readonly isLegacy: boolean;
   readonly parameters: Readonly<選項列表>;
   readonly defaultOptions: Readonly<選項>;
@@ -27,20 +27,19 @@ export default class 推導方案<T> implements 推導函數<T> {
       return parameters;
     })()
   ) {
+    super();
+
     const optionInstance = new 推導選項(選項列表);
     this.isLegacy = optionInstance.isLegacy;
     this.parameters = optionInstance.parameters;
     this.defaultOptions = optionInstance.defaultOptions;
     this.optionsCount = optionInstance.optionsCount;
 
-    // FIXME `apply` works only with `Function`s
-    return Object.freeze(
-      new Proxy(this, {
-        apply(target, ...args) {
-          return Reflect.apply(Reflect.get(target, "推導"), ...args);
-        },
-      })
-    ) as this;
+    return new Proxy(this, {
+      apply(target, _thisArg, args: Parameters<推導函數<T>>) {
+        return target.推導(...args);
+      },
+    });
   }
 
   推導(地位: 音韻地位, 字頭: string | null = null, 選項: Record<string, unknown> = {}, ...args: unknown[]) {
