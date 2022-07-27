@@ -9,6 +9,6 @@ export type 選項迭代 = Iterable<Readonly<選項項目>>;
 export type 選項 = Record<string, unknown>;
 
 export type 原始推導函數<T> = {
-  (): Iterable<選項項目>;
-  (地位: 音韻地位, 字頭: string | null, 選項: 選項, ...args: unknown[]): T;
+  (選項?: 選項): Iterable<選項項目>;
+  (選項: 選項, 地位: 音韻地位, 字頭: string | null, ...rest: unknown[]): T;
 };
