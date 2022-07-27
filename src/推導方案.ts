@@ -14,11 +14,14 @@ export type 推導函數<T> = {
 export default class 推導方案<T> extends Function implements (推導方案<T>)["推導"] {
   constructor(readonly 原始推導函數: 原始推導函數<T>) {
     super();
-    return new Proxy(this, {
-      apply(target, _thisArg, args: Parameters<推導方案<T>["推導"]>) {
-        return target.推導(...args);
+    const proxy: this = new Proxy(this, {
+      apply(_target, _thisArg, args: Parameters<推導方案<T>["推導"]>) {
+        // NOTE Don't use `target.推導`,
+        // because `this` in `推導` should refer to the proxied object, not the original.
+        return proxy.推導(...args);
       },
     });
+    return proxy;
   }
 
   /**
@@ -58,7 +61,7 @@ export default class 推導方案<T> extends Function implements (推導方案<T
    */
   推導(選項: Record<string, unknown> = {}): 推導函數<T> {
     const 方案選項 = this.方案選項(選項);
-    const 實際選項 = { ...方案選項.defaultOptions, 選項 };
+    const 實際選項 = { ...方案選項.defaultOptions, ...選項 };
 
     const derive = (地位: 音韻地位, 字頭: string | null = null, ...args: unknown[]): T => {
       if (!地位) throw new Error("expect 音韻地位");
