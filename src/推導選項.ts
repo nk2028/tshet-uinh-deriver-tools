@@ -1,10 +1,13 @@
 import type { 參數映射, 選項, 選項列表, 選項迭代, 選項項目 } from "./types";
 
+// `Array.isArray`, but with more conservative type inference
+const isArray: (x: unknown) => x is readonly unknown[] = Array.isArray;
+
 function setParametersMap(parametersMap: 參數映射, key: string, value: unknown) {
   key = String(key);
   const currentValue = parametersMap.get(key);
   if (typeof currentValue !== "undefined") {
-    if (Array.isArray(currentValue)) {
+    if (isArray(currentValue)) {
       if (currentValue.includes(value, 1)) {
         const cloned = [...currentValue] as [unknown, unknown, ...unknown[]];
         cloned[0] = value;
@@ -31,7 +34,7 @@ export default class 推導選項 {
     const defaultOptions: 選項 = {};
 
     for (const parameter of 選項列表) {
-      if (!Array.isArray(parameter)) {
+      if (!isArray(parameter)) {
         const text = String(parameter || "");
         parameters.push(text);
         this.parametersMap.set(Symbol(), text);
@@ -48,7 +51,7 @@ export default class 推導選項 {
         parameters.push([key, value]);
         this.parametersMap.set(key, value);
         this.optionsCount++;
-      } else if (Array.isArray(value) && value.length > 1) {
+      } else if (isArray(value) && value.length > 1) {
         let [defaultValue] = value;
         if (
           typeof defaultValue === "number" &&
