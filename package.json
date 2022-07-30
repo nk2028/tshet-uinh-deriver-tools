@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/nk2028/qieyun-deriver-tools#readme",
   "peerDependencies": {
-    "qieyun": ">=0.13.4"
+    "qieyun": "0.13.x"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.3.0",
