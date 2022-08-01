@@ -61,12 +61,12 @@ export default class 推導方案<T> extends Function implements (推導方案<T
    */
   推導(選項: Record<string, unknown> = {}): 推導函數<T> {
     const 方案選項 = this.方案選項(選項);
-    const 實際選項 = { ...方案選項.defaultOptions, ...選項 };
+    const 實際選項 = { ...方案選項.預設選項, ...選項 };
 
     const derive = (地位: 音韻地位, 字頭: string | null = null, ...args: unknown[]): T => {
       if (!地位) throw new Error("expect 音韻地位");
       地位 = 適配分析體系.v2extStrict(地位);
-      if (方案選項.isLegacy) {
+      if (方案選項.兼容模式) {
         地位 = 適配poem(地位);
         地位.屬於`脣音 或 ${表達式.開合中立韻}` && (地位 = 地位.調整({ 呼: null }));
         地位.屬於`${表達式.重紐母} (${表達式.重紐韻} 或 清韻)` || (地位 = 地位.調整({ 重紐: null }));

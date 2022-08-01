@@ -51,13 +51,13 @@ test("動態選項列表", () => {
   const 地位1 = 音韻地位.from描述("端開三麻平");
   const 地位2 = 音韻地位.from描述("昌咍上");
 
-  expect(方案.方案選項().parametersMap.get("正則化")).toBe(true); // strict comparison
+  expect(方案.方案選項().鍵值.get("正則化")).toBe(true); // strict comparison
   const 推導 = 方案();
   expect(推導(地位1)).toBe("d:端開三麻平");
   expect(推導(地位2)).toBe("d:昌開三廢上");
 
   const 選項 = { 兼容模式: true };
-  expect(方案.方案選項(選項).parametersMap.has("正則化")).toBeFalsy();
+  expect(方案.方案選項(選項).鍵值.has("正則化")).toBeFalsy();
   const 舊版推導 = 方案(選項);
   expect(舊版推導(地位1)).toBe("d:知開三麻平");
   expect(舊版推導(地位2)).toBe("d:昌開一咍上");
