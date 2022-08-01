@@ -10,6 +10,9 @@ export type 推導函數<T> = {
   readonly 方案: 推導方案<T>;
 };
 
+/**
+ * 包裝了原始的推導方案代碼的對象，可以方便地從 JS 調用。
+ */
 // @ts-expect-error ts(2420)
 export default class 推導方案<T> extends Function implements (推導方案<T>)["推導"] {
   constructor(readonly 原始推導函數: 原始推導函數<T>) {
