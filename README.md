@@ -10,7 +10,7 @@
 // 演示用方案：直接返回 "d:" 後加地位描述
 if (!音韻地位) {
   // 提供選項
-  const params: 選項項目[] = [
+  const params = [
     ["兼容模式", false],
     ["最簡描述", false],
   ];
@@ -36,7 +36,7 @@ import * as Qieyun from "qieyun";
 
 const from = Qieyun.音韻地位.from描述;
 
-const 原始方案 = new Function("Qieyun", "選項 = {}", "音韻地位", "字頭", 方案代碼).bind(undefined, Qieyun);
+const 原始方案 = new Function("Qieyun", "選項 = {}", "音韻地位", "字頭 = null", 方案代碼).bind(undefined, Qieyun);
 
 const 方案 = new 推導方案(原始方案);
 
