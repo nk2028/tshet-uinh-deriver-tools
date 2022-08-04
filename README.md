@@ -1,4 +1,4 @@
-# qieyun-deriver-tools
+# tshet-uinh-deriver-tools
 
 推導方案相關功能，用以使推導方案更便於調用。
 
@@ -31,7 +31,7 @@ return "d:" + (選項.最簡描述 ? 音韻地位.最簡描述 : 音韻地位.�
 ### 調用
 
 ```js
-import { 推導方案 } from "qieyun-deriver-tools";
+import { 推導方案 } from "tshet-uinh-deriver-tools";
 import * as Qieyun from "qieyun";
 
 const from = Qieyun.音韻地位.from描述;

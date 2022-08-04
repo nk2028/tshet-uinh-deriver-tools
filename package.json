@@ -1,7 +1,7 @@
 {
-  "name": "qieyun-deriver-tools",
+  "name": "tshet-uinh-deriver-tools",
   "version": "0.1.0",
-  "description": "",
+  "description": "Utilities for derivers based on Qieyun.js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -11,15 +11,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nk2028/qieyun-deriver-tools.git"
+    "url": "git+https://github.com/nk2028/tshet-uinh-deriver-tools.git"
   },
   "keywords": [],
-  "author": "Ngiox Khyen 2028 Project",
+  "author": "Ngyoq-Khuen 2028 Project",
   "license": "CC0-1.0",
   "bugs": {
-    "url": "https://github.com/nk2028/qieyun-deriver-tools/issues"
+    "url": "https://github.com/nk2028/tshet-uinh-deriver-tools/issues"
   },
-  "homepage": "https://github.com/nk2028/qieyun-deriver-tools#readme",
+  "homepage": "https://github.com/nk2028/tshet-uinh-deriver-tools#readme",
   "peerDependencies": {
     "qieyun": "0.13.x"
   },

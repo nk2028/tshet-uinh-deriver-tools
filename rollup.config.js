@@ -7,7 +7,7 @@ const config = {
     file: "dist/index.js",
     format: "umd",
     sourcemap: true,
-    name: "QieyunDeriverTools",
+    name: "TshetUinhDeriverTools",
     exports: "named",
     globals: {
       qieyun: "Qieyun",
