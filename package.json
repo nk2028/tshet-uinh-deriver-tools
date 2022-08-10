@@ -5,9 +5,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "prepare": "npm run build",
     "test": "eslint src && jest",
-    "build": "rollup -c",
-    "prepublish": "npm run build"
+    "build": "rollup -c"
   },
   "repository": {
     "type": "git",
