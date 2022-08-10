@@ -1,7 +1,7 @@
 {
   "name": "tshet-uinh-deriver-tools",
   "version": "0.1.0",
-  "description": "Utilities for derivers based on Qieyun.js",
+  "description": "Utilities for Qieyun.js derivers",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
