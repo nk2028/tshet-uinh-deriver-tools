@@ -29,7 +29,7 @@ export default class 推導方案<T> extends Function implements (推導方案<T
 
   /**
    * 返回方案提供的選項列表及各項預設值等。
-   * 
+   *
    * 一些方案還會依 `當前選項` 而條件性提供不同選項。
    */
   方案選項(當前選項: Record<string, unknown> = {}): 推導選項 {
@@ -45,7 +45,7 @@ export default class 推導方案<T> extends Function implements (推導方案<T
 
   /**
    * 以所給之 `選項` 建立推導函數。向返回的推導函數傳入 `音韻地位` 等即可實行推導。
-   * 
+   *
    * `選項` 中未指定的項目會被填入預設值。
    *
    * ```typescript
