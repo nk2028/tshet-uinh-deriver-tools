@@ -32,6 +32,7 @@
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-import": "^2.26.0",
     "jest": "^28.1.1",
+    "qieyun": "^0.13.4",
     "rollup": "^2.75.6",
     "rollup-plugin-ts": "^3.0.2",
     "ts-jest": "^28.0.5",
