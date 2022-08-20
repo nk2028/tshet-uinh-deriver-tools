@@ -94,7 +94,7 @@ export default class 推導選項 {
   }
 
   toJSON() {
-    return this.預設選項;
+    return this.列表;
   }
 
   toString() {
