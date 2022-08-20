@@ -1,6 +1,6 @@
 import { 適配分析體系, 音韻地位 } from "qieyun";
 
-import type { 選項項目 } from "./types";
+import type { 原始推導函數, 選項項目 } from "./types";
 import 推導方案 from "./推導方案";
 
 type MockOptions = Partial<{
@@ -68,4 +68,11 @@ test("動態指定 $legacy", () => {
   expect(方案()(地位)).toBe("d:幫三清入");
   expect(方案({ 兼容模式: false })(地位)).toBe("d:幫三清入");
   expect(方案({ 兼容模式: true })(地位)).toBe("d:幫三A清入");
+});
+
+test("不處理選項的方案", () => {
+  const 無選項方案 = new 推導方案((() => {
+    return "orz";
+  }) as 原始推導函數<string>);
+  expect(無選項方案.方案選項().列表.length).toBe(0);
 });
