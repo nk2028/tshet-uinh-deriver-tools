@@ -30,14 +30,15 @@ export default class 推導選項 {
   readonly 項目數 = 0;
 
   constructor(選項列表: 選項迭代 = []) {
-    const parameters: 選項列表 = [];
-    const defaultOptions: 選項 = {};
+    const 列表: 選項列表 = [];
+    const 鍵值: 參數映射 = new Map();
+    const 預設選項: 選項 = {};
 
     for (const parameter of 選項列表) {
       if (!isArray(parameter)) {
         const text = String(parameter || "");
-        parameters.push(text);
-        this.鍵值.set(Symbol(), text);
+        列表.push(text);
+        鍵值.set(Symbol(), text);
         continue;
       }
       const key = String(parameter[0]);
@@ -47,9 +48,9 @@ export default class 推導選項 {
         continue;
       }
       if (["string", "number", "boolean"].includes(typeof value)) {
-        defaultOptions[key] = value;
-        parameters.push([key, value]);
-        this.鍵值.set(key, value);
+        預設選項[key] = value;
+        列表.push([key, value]);
+        鍵值.set(key, value);
         this.項目數++;
       } else if (isArray(value) && value.length > 1) {
         let [defaultValue] = value;
@@ -62,15 +63,22 @@ export default class 推導選項 {
           defaultValue = value[defaultValue];
         else if (!value.includes(defaultValue, 1)) defaultValue = value[1];
         const cloned = [...value] as [unknown, unknown, ...unknown[]];
-        defaultOptions[key] = cloned[0] = defaultValue;
-        parameters.push([key, cloned]);
-        this.鍵值.set(key, cloned);
+        預設選項[key] = cloned[0] = defaultValue;
+        列表.push([key, cloned]);
+        鍵值.set(key, cloned);
         this.項目數++;
       }
     }
 
-    this.列表 = parameters;
-    this.預設選項 = defaultOptions;
+    if (this.項目數) {
+      this.列表 = 列表;
+      this.鍵值 = 鍵值;
+      this.預設選項 = 預設選項;
+    } else {
+      this.列表 = [];
+      this.鍵值 = new Map();
+      this.預設選項 = {};
+    }
     return Object.freeze(this);
   }
 

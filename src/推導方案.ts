@@ -40,8 +40,7 @@ export default class 推導方案<T> extends Function implements (推導方案<T
         parameters = raw;
       }
     } finally { /* intentionally ignored */ }
-    const res = new 推導選項(parameters);
-    return res.項目數 ? res : new 推導選項();
+    return new 推導選項(parameters);
   }
 
   /**

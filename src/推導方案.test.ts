@@ -76,3 +76,11 @@ test("不處理選項的方案", () => {
   }) as 原始推導函數<string>);
   expect(無選項方案.方案選項().列表.length).toBe(0);
 });
+
+test("無選項兼容模式方案", () => {
+  const legacy方案 = new 推導方案(((_選項: unknown, 音韻地位: unknown) => {
+    if (!音韻地位) return [["$legacy", true]];
+    return "orz";
+  }) as unknown as 原始推導函數<string>);
+  expect(legacy方案.方案選項().兼容模式).toBe(true);
+});
