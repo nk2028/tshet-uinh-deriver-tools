@@ -39,7 +39,9 @@ export default class 推導方案<T> extends Function implements (推導方案<T
       if (typeof parameters[Symbol.iterator] === "function") {
         parameters = raw;
       }
-    } finally { /* intentionally ignored */ }
+    } catch {
+      /* intentionally ignored */
+    }
     return new 推導選項(parameters);
   }
 
