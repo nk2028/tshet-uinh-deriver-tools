@@ -1,7 +1,9 @@
-import ts from "rollup-plugin-ts";
+// @ts-check
+
+import typescript from "@rollup/plugin-typescript";
 
 /** @type { import("rollup").RollupOptions } */
-const config = {
+export default {
   input: "src/index.ts",
   output: {
     file: "dist/index.js",
@@ -14,6 +16,10 @@ const config = {
     },
   },
   external: ["qieyun"],
-  plugins: [ts()],
+  plugins: [
+    typescript({
+      // NOTE needed with `incremental: true` in tsconfig.json
+      outputToFilesystem: false,
+    }),
+  ],
 };
-export default config;

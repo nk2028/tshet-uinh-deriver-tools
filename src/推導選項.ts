@@ -20,7 +20,7 @@ function setParametersMap(parametersMap: 參數映射, key: string, value: unkno
 
 function parametersMapToArray(parametersMap: 參數映射, legacy = false): 選項項目[] {
   const res: 選項項目[] = Array.from(parametersMap, ([key, value]) =>
-    typeof key === "string" ? [key, value] : (value as string)
+    typeof key === "string" ? [key, value] : (value as string),
   );
   if (legacy) {
     res.push(["$legacy", true]);

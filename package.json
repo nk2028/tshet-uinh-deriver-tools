@@ -3,10 +3,10 @@
   "version": "0.1.5",
   "description": "Utilities for Qieyun.js derivers",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/types/index.d.ts",
   "scripts": {
     "prepare": "npm run build",
-    "test": "eslint src && jest",
+    "test": "npm run build && eslint src && prettier src --list-different && jest",
     "build": "rollup -c"
   },
   "repository": {
@@ -24,20 +24,24 @@
     "qieyun": "0.13.x"
   },
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^13.3.0",
-    "@types/jest": "^28.1.1",
-    "@typescript-eslint/eslint-plugin": "^5.28.0",
-    "@typescript-eslint/parser": "^5.28.0",
-    "eslint": "^8.17.0",
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.7.0",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@types/eslint__js": "^8.42.3",
+    "@types/jest": "^29.5.12",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
-    "eslint-plugin-import": "^2.26.0",
-    "jest": "^28.1.1",
+    "eslint-plugin-import": "^2.29.1",
+    "jest": "^29.7.0",
+    "prettier": "^3.3.3",
     "qieyun": "^0.13.4",
-    "rollup": "^2.75.6",
-    "rollup-plugin-ts": "^3.0.2",
-    "ts-jest": "^28.0.5",
-    "typedoc": "^0.22.17",
-    "typescript": "^4.7.3"
+    "rollup": "^4.19.0",
+    "ts-jest": "^29.2.3",
+    "tslib": "^2.6.3",
+    "typedoc": "^0.26.5",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^7.17.0"
   },
   "files": [
     "/dist/*.[jt]s",

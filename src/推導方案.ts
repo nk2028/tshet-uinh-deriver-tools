@@ -17,6 +17,7 @@ export default interface 推導方案<T> {
 /**
  * 包裝了原始的推導方案代碼的對象，可以方便地從 JS 調用。
  */
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export default class 推導方案<T> extends Function {
   constructor(readonly 原始推導函數: 原始推導函數<T>) {
     super();
@@ -84,12 +85,14 @@ export default class 推導方案<T> extends Function {
       try {
         return this.原始推導函數(實際選項, 地位, 字頭, ...args);
       } catch (err) {
-        throw new Error(
+        const newErr = new Error(
           字頭
             ? `推導「${字頭}」字（音韻地位：${地位.描述}）時發生錯誤`
             : `推導「${地位.描述}」音韻地位（字為 null）時發生錯誤`,
-          { cause: err as Error }
         );
+        // XXX ES2022 feature
+        (newErr as unknown as { cause: unknown }).cause = err;
+        throw newErr;
       }
     };
 

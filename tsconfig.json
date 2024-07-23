@@ -1,10 +1,13 @@
 {
   "compilerOptions": {
     "incremental": true,
-    "target": "ES2017",
-    "lib": ["ESNext"],
+    "target": "ES2020",
+    "lib": ["ES2020"],
+    "rootDir": "src",
+    "outDir": "./dist",
     "declaration": true,
-    "declarationMap": true,
+    //"declarationMap": true,
+    "declarationDir": "./types",
     "inlineSourceMap": true,
 
     "strict": true,
@@ -19,15 +22,14 @@
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "importsNotUsedAsValues": "error",
 
     "module": "ESNext",
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "experimentalDecorators": true,
-    "outDir": "./dist"
+    //"experimentalDecorators": true,
   },
-  "include": ["./src"]
+  "include": ["./src"],
+  "exclude": ["**/*.test.ts"],
 }
