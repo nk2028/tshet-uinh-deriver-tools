@@ -1,9 +1,7 @@
-import { 表達式, 適配分析體系, 音韻地位 } from "qieyun";
+import { 音韻地位 } from "qieyun";
 
 import type { 原始推導函數, 選項迭代 } from "./types";
 import 推導選項 from "./推導選項";
-
-const 適配poem = 適配分析體系("poem");
 
 export type 推導函數<T> = {
   (地位: 音韻地位, 字頭?: string | null, ...args: unknown[]): T;
@@ -76,12 +74,6 @@ export default class 推導方案<T> extends Function {
 
     const derive = (地位: 音韻地位, 字頭: string | null = null, ...args: unknown[]): T => {
       if (!地位) throw new Error("expect 音韻地位");
-      地位 = 適配分析體系.v2extStrict(地位);
-      if (方案選項.兼容模式) {
-        地位 = 適配poem(地位);
-        地位.屬於`脣音 或 ${表達式.開合中立韻}` && (地位 = 地位.調整({ 呼: null }));
-        地位.屬於`${表達式.重紐母} (${表達式.重紐韻} 或 清韻)` || (地位 = 地位.調整({ 重紐: null }));
-      }
       try {
         return this.原始推導函數(實際選項, 地位, 字頭, ...args);
       } catch (err) {
