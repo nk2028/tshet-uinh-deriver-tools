@@ -1,4 +1,4 @@
-import { 推導設定 } from "./推導設定";
+import 推導設定 from "./推導設定";
 
 const EXAMPLE = [
   { key: "選項一", default: true },

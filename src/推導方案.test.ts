@@ -1,6 +1,6 @@
 import { 音韻地位 } from "qieyun";
 
-import type { 原始推導函數, 選項項目 } from "./types";
+import type { 原始推導函數 } from "./推導方案";
 import 推導方案 from "./推導方案";
 
 type MockOptions = Partial<{
@@ -10,11 +10,11 @@ type MockOptions = Partial<{
 }> &
   Record<string, unknown>;
 
-function mock(選項?: MockOptions): 選項項目[];
+function mock(選項?: MockOptions): unknown[];
 function mock(選項: MockOptions, 地位: 音韻地位, ...rest: unknown[]): string;
-function mock(選項: MockOptions = {}, 地位?: 音韻地位): 選項項目[] | string {
+function mock(選項: MockOptions = {}, 地位?: 音韻地位): unknown[] | string {
   if (!地位) {
-    const params: 選項項目[] = [
+    const params: unknown[] = [
       ["前綴", "d"],
       ["高級選項", false],
     ];
@@ -45,12 +45,12 @@ test("指定選項", () => {
 test("動態選項列表", () => {
   const 地位 = 音韻地位.from描述("幫三C凡入");
 
-  expect(mock方案.方案選項().列表.some(item => item?.[0] === "簡略描述")).toBeFalsy();
+  expect(mock方案.方案設定().列表.some(item => "key" in item && item.key === "簡略描述")).toBeFalsy();
   const 推導 = mock方案();
   expect(推導(地位)).toBe("d:幫三C凡入");
 
   const 選項 = { 高級選項: true };
-  expect(mock方案.方案選項(選項).列表.some(item => item?.[0] === "簡略描述")).toBeTruthy();
+  expect(mock方案.方案設定(選項).列表.some(item => "key" in item && item.key === "簡略描述")).toBeTruthy();
   const 推導簡略描述 = mock方案(選項);
   expect(推導簡略描述(地位)).toBe("d:幫凡入");
 });

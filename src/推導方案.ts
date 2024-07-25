@@ -1,7 +1,13 @@
-import { 音韻地位 } from "qieyun";
+import type { 音韻地位 } from "qieyun";
 
-import type { 原始推導函數, 選項迭代 } from "./types";
-import 推導選項 from "./推導選項";
+import 推導設定 from "./推導設定";
+
+export type 選項 = Record<string, unknown>;
+
+export type 原始推導函數<T> = {
+  (選項?: 選項): unknown[];
+  (選項: 選項, 地位: 音韻地位, 字頭: string | null, ...rest: unknown[]): T;
+};
 
 export type 推導函數<T> = {
   (地位: 音韻地位, 字頭?: string | null, ...args: unknown[]): T;
@@ -30,21 +36,21 @@ export default class 推導方案<T> extends Function {
   }
 
   /**
-   * 返回方案提供的選項列表及各項預設值等。
+   * 返回方案提供的設定項列表。
    *
-   * 一些方案還會依 `當前選項` 而條件性提供不同選項。
+   * 一些方案還會依 `當前選項` 而條件性提供不同設定項。
    */
-  方案選項(當前選項: Record<string, unknown> = {}): 推導選項 {
-    let parameters: 選項迭代 = [];
+  方案設定(當前選項: Record<string, unknown> = {}): 推導設定 {
+    let settings: unknown[] = [];
     try {
       const raw = this.原始推導函數(當前選項);
-      if (typeof parameters[Symbol.iterator] === "function") {
-        parameters = raw;
+      if (Array.isArray(raw)) {
+        settings = raw;
       }
     } catch {
       /* intentionally ignored */
     }
-    return new 推導選項(parameters);
+    return new 推導設定(settings);
   }
 
   /**
@@ -57,7 +63,7 @@ export default class 推導方案<T> extends Function {
    * ```typescript
    * const from = Qieyun.音韻地位.from描述;
    *
-   * const 方案 = new 推導方案(tupa原始推導函數);
+   * const 方案 = new 推導方案(舊版TUPA原始推導函數);
    *
    * const 推導1 = 方案(); // 使用預設選項；寫 `方案(...)` 或 `方案.推導(...)` 效果相同
    * 推導1(from('並灰上'), '倍'); // => 'bojq'
@@ -69,8 +75,8 @@ export default class 推導方案<T> extends Function {
    * ```
    */
   推導(選項: Record<string, unknown> = {}): 推導函數<T> {
-    const 方案選項 = this.方案選項(選項);
-    const 實際選項 = { ...方案選項.預設選項, ...選項 };
+    const 方案設定 = this.方案設定(選項);
+    const 實際選項 = { ...方案設定.預設選項(), ...選項 };
 
     const derive = (地位: 音韻地位, 字頭: string | null = null, ...args: unknown[]): T => {
       if (!地位) throw new Error("expect 音韻地位");
@@ -82,7 +88,7 @@ export default class 推導方案<T> extends Function {
             ? `推導「${字頭}」字（音韻地位：${地位.描述}）時發生錯誤`
             : `推導「${地位.描述}」音韻地位（字為 null）時發生錯誤`,
         );
-        // XXX ES2022 feature
+        // NOTE ES2022 feature
         (newErr as unknown as { cause: unknown }).cause = err;
         throw newErr;
       }
