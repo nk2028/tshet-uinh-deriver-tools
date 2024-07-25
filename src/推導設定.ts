@@ -159,6 +159,16 @@ export class 推導設定 {
     this.解析錯誤 = 解析錯誤;
   }
 
+  預設選項(): Record<string, unknown> {
+    const 選項: Record<string, unknown> = {};
+    for (const item of this.列表) {
+      if ("key" in item) {
+        選項[item.key] = item.default;
+      }
+    }
+    return 選項;
+  }
+
   clone(): 推導設定 {
     return new 推導設定(this.列表);
   }

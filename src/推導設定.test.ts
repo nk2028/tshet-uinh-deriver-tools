@@ -44,7 +44,7 @@ test("建立設定（簡略形式）", () => {
   expect(設定.列表).toEqual(EXAMPLE);
 });
 
-test("複製、調整預設值", () => {
+test("複製、調整預設值、預設選項", () => {
   const 設定 = new 推導設定(EXAMPLE);
   expect(設定.列表).toEqual(EXAMPLE);
   expect(設定.clone().列表).toEqual(EXAMPLE);
@@ -59,6 +59,12 @@ test("複製、調整預設值", () => {
       options: [{ value: "好耶" }, { value: "壞耶", text: "噫（" }, { value: 42 }],
     },
   ] as const);
+  expect(設定.setDefault("選項四", "壞耶").預設選項()).toEqual({
+    選項一: true,
+    選項二: 42,
+    選項三: "orz",
+    選項四: "壞耶",
+  });
   // `setDefault` does not alter the original object
   expect(設定.列表).toEqual(EXAMPLE);
 });
