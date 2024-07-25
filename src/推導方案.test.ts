@@ -4,9 +4,9 @@ import type { 原始推導函數, 選項項目 } from "./types";
 import 推導方案 from "./推導方案";
 
 type MockOptions = Partial<{
-  兼容模式: boolean;
-  最簡描述: boolean;
-  正則化: boolean;
+  前綴: string;
+  高級選項: boolean;
+  簡略描述: boolean;
 }> &
   Record<string, unknown>;
 
@@ -15,20 +15,15 @@ function mock(選項: MockOptions, 地位: 音韻地位, ...rest: unknown[]): st
 function mock(選項: MockOptions = {}, 地位?: 音韻地位): 選項項目[] | string {
   if (!地位) {
     const params: 選項項目[] = [
-      ["兼容模式", false],
-      ["最簡描述", false],
+      ["前綴", "d"],
+      ["高級選項", false],
     ];
-    if (選項.兼容模式) {
-      params.push(["$legacy", true]);
-    } else {
-      params.push(["正則化", true]);
+    if (選項.高級選項) {
+      params.push(["簡略描述", true]);
     }
     return params;
   }
-  if (選項.正則化) {
-    // TODO 重新設計測試用推導方案
-  }
-  return "d:" + (選項.最簡描述 ? 地位.簡略描述 : 地位.描述);
+  return 選項.前綴 + ":" + (選項.簡略描述 ? 地位.簡略描述 : 地位.描述);
 }
 
 const mock方案 = new 推導方案(mock);
@@ -44,24 +39,20 @@ test("推導函數.方案", () => {
 });
 
 test("指定選項", () => {
-  expect(mock方案({ 最簡描述: true })(音韻地位.from描述("幫三C凡入"))).toBe("d:幫凡入");
+  expect(mock方案({ 前綴: "D" })(音韻地位.from描述("幫三C凡入"))).toBe("D:幫三C凡入");
 });
 
-// TODO 需測試方案更新
-test.skip("動態選項列表", () => {
-  const 地位1 = 音韻地位.from描述("端開三麻平");
-  const 地位2 = 音韻地位.from描述("昌咍上");
+test("動態選項列表", () => {
+  const 地位 = 音韻地位.from描述("幫三C凡入");
 
-  expect(mock方案.方案選項().鍵值.get("正則化")).toBe(true); // strict comparison
+  expect(mock方案.方案選項().列表.some(item => item?.[0] === "簡略描述")).toBeFalsy();
   const 推導 = mock方案();
-  expect(推導(地位1)).toBe("d:端開三麻平");
-  expect(推導(地位2)).toBe("d:昌開三廢上");
+  expect(推導(地位)).toBe("d:幫三C凡入");
 
-  const 選項 = { 兼容模式: true };
-  expect(mock方案.方案選項(選項).鍵值.has("正則化")).toBeFalsy();
-  const 舊版推導 = mock方案(選項);
-  expect(舊版推導(地位1)).toBe("d:知開三麻平");
-  expect(舊版推導(地位2)).toBe("d:昌開一咍上");
+  const 選項 = { 高級選項: true };
+  expect(mock方案.方案選項(選項).列表.some(item => item?.[0] === "簡略描述")).toBeTruthy();
+  const 推導簡略描述 = mock方案(選項);
+  expect(推導簡略描述(地位)).toBe("d:幫凡入");
 });
 
 test("不處理選項的方案", () => {
