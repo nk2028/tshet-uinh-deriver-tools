@@ -1,4 +1,4 @@
-export interface Parameter {
+export interface Parameter extends Record<string, unknown> {
   key: string;
   default: unknown;
   text?: string;
@@ -157,5 +157,33 @@ export class 推導設定 {
       }
     });
     this.解析錯誤 = 解析錯誤;
+  }
+
+  clone(): 推導設定 {
+    return new 推導設定(this.列表);
+  }
+
+  setDefault(key: string, value: unknown): 推導設定 {
+    let found = false;
+    const newList = this.列表.map(item => {
+      if ("key" in item && item.key === key) {
+        found = true;
+        return { ...item, default: value };
+      } else {
+        return item;
+      }
+    });
+    if (!found) {
+      throw new Error(`key not found: ${JSON.stringify(key)}`);
+    }
+    return new 推導設定(newList);
+  }
+
+  toJSON(): readonly 設定項[] {
+    return this.列表;
+  }
+
+  toString() {
+    return JSON.stringify(this);
   }
 }
