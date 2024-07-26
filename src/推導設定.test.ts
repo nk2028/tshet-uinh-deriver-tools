@@ -5,10 +5,11 @@ const EXAMPLE = [
   { key: "選項二", default: 42 },
   { type: "groupLabel", text: "標籤" },
   { key: "選項三", default: "orz", text: "選項名" },
+  { type: "newline" },
   {
     key: "選項四",
     default: "好耶",
-    options: [{ value: "好耶" }, { value: "壞耶", text: "噫（" }, { value: 42 }],
+    options: [{ value: "好耶" }, { value: "壞耶", text: "噫（" }, { value: 42 }, { value: null }],
   },
 ] as const;
 
@@ -17,10 +18,12 @@ const EXAMPLE_INPUT = [
   { key: "選項二", default: 42 },
   { type: "groupLabel", text: "標籤" },
   { key: "選項三", default: "orz", text: "選項名" },
+  { type: "newline" },
+  { key: "忽略", default: null },
   {
     key: "選項四",
     default: 0,
-    options: [{ value: "好耶" }, { value: "壞耶", text: "噫（" }, { value: 42 }],
+    options: [{ value: "好耶" }, { value: "壞耶", text: "噫（" }, { value: 42 }, { value: null }],
   },
 ] as const;
 
@@ -29,7 +32,9 @@ const EXAMPLE_COMPACT_INPUT = [
   ["選項二", 42],
   "標籤",
   ["選項三|選項名", "orz"],
-  ["選項四", [1, "好耶", { value: "壞耶", text: "噫（" }, 42]],
+  "",
+  ["忽略", null],
+  ["選項四", [1, "好耶", { value: "壞耶", text: "噫（" }, 42, null]],
 ] as const;
 
 test("建立設定（基本形式）", () => {
@@ -53,10 +58,11 @@ test("複製、調整預設值、預設選項", () => {
     { key: "選項二", default: 42 },
     { type: "groupLabel", text: "標籤" },
     { key: "選項三", default: "orz", text: "選項名" },
+    { type: "newline" },
     {
       key: "選項四",
       default: "壞耶",
-      options: [{ value: "好耶" }, { value: "壞耶", text: "噫（" }, { value: 42 }],
+      options: [{ value: "好耶" }, { value: "壞耶", text: "噫（" }, { value: 42 }, { value: null }],
     },
   ] as const);
   expect(設定.setDefault("選項四", "壞耶").預設選項()).toEqual({
