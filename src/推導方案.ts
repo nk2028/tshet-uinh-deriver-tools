@@ -4,17 +4,18 @@ import 推導設定 from "./推導設定";
 
 export type 選項 = Record<string, unknown>;
 
-export type 原始推導函數<T> = {
+export interface 原始推導函數<T> {
   (選項?: 選項): unknown[];
   (選項: 選項, 地位: 音韻地位, 字頭: string | null, ...rest: unknown[]): T;
-};
+}
 
-export type 推導函數<T> = {
+export interface 推導函數<T> {
   (地位: 音韻地位, 字頭?: string | null, ...args: unknown[]): T;
   readonly 方案: 推導方案<T>;
-};
+}
 
 export default interface 推導方案<T> {
+  // eslint-disable-next-line @typescript-eslint/prefer-function-type
   (...args: Parameters<推導方案<T>["推導"]>): ReturnType<推導方案<T>["推導"]>;
 }
 

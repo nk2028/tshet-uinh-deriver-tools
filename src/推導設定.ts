@@ -44,7 +44,7 @@ export default class 推導設定 {
         }
         const sep = rawKey.indexOf("|");
         let key = rawKey;
-        let text: string = "";
+        let text = "";
         if (sep !== -1) {
           key = rawKey.slice(0, sep);
           text = rawKey.slice(sep + 1);
@@ -122,7 +122,7 @@ export default class 推導設定 {
               return [];
             }
             if (seenValues.has(option.value)) {
-              解析錯誤.push(`item #${i} option #${j}: duplicate value: ${option.value}`);
+              解析錯誤.push(`item #${i} option #${j}: duplicate value: ${String(option.value)}`);
               return [];
             }
             parsedOptions.push({ ...option });
@@ -164,7 +164,7 @@ export default class 推導設定 {
       } else if (原始設定項.type === "newline") {
         return [{ ...原始設定項 } as Newline];
       } else {
-        解析錯誤.push(`item #${i}: unknown type: ${原始設定項.type}`);
+        解析錯誤.push(`item #${i}: unknown type: ${String(原始設定項.type)}`);
         return [];
       }
     });

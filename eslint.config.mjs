@@ -38,9 +38,9 @@ export default tseslint.config(
   {
     files: ["src/**/*.ts"],
     extends: [
-      ...tseslint.configs.recommended,
-      //...tseslint.configs.strictTypeChecked,
-      //...tseslint.configs.stylisticTypeChecked,
+      //...tseslint.configs.recommended,
+      ...tseslint.configs.strictTypeChecked,
+      ...tseslint.configs.stylisticTypeChecked,
     ],
     languageOptions: {
       parserOptions: {
@@ -50,6 +50,17 @@ export default tseslint.config(
     },
     rules: {
       "@typescript-eslint/explicit-module-boundary-types": "off",
+
+      "@typescript-eslint/no-non-null-assertion": "off",
+      "@typescript-eslint/no-unnecessary-condition": "off",
+      "@typescript-eslint/restrict-template-expressions": [
+        "error",
+        {
+          allowBoolean: true,
+          allowNullish: true,
+          allowNumber: true,
+        },
+      ],
     },
   },
   prettierConfig,

@@ -23,7 +23,7 @@ function mock(選項: MockOptions = {}, 地位?: 音韻地位): unknown[] | stri
     }
     return params;
   }
-  return 選項.前綴 + ":" + (選項.簡略描述 ? 地位.簡略描述 : 地位.描述);
+  return 選項.前綴! + ":" + (選項.簡略描述 ? 地位.簡略描述 : 地位.描述);
 }
 
 const mock方案 = new 推導方案(mock);
