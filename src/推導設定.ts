@@ -1,8 +1,12 @@
+export interface Option extends Readonly<Record<string, unknown>> {
+  readonly value: unknown;
+  readonly text?: string;
+}
 export interface Parameter extends Readonly<Record<string, unknown>> {
   readonly key: string;
   readonly value: unknown;
   readonly text?: string;
-  readonly options?: unknown[];
+  readonly options?: Option[];
   readonly description?: string;
 }
 export interface Newline {
@@ -94,7 +98,7 @@ export default class 推導設定 {
           (原始設定項 as ParameterMut).description = description;
         }
         if (options !== null) {
-          (原始設定項 as ParameterMut).options = options;
+          ((原始設定項 as ParameterMut).options as unknown[]) = options;
         }
       }
 
@@ -146,7 +150,7 @@ export default class 推導設定 {
             return [];
           }
           const seenValues = new Set();
-          const parsedOptions: { value: unknown }[] = [];
+          const parsedOptions: Option[] = [];
           for (const [j, rawOption] of 設定項.options.entries()) {
             const option: object =
               typeof rawOption === "object" && rawOption !== null ? rawOption : { value: rawOption };
