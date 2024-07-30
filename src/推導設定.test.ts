@@ -3,8 +3,8 @@ import 推導設定 from "./推導設定";
 const EXAMPLE = [
   { key: "選項一", value: true },
   { key: "選項二", value: 42 },
-  { type: "groupLabel", text: "標籤" },
-  { key: "選項三", value: "orz", text: "選項名" },
+  { type: "groupLabel", text: "標籤", description: "分組說明" },
+  { key: "選項三", value: "orz", text: "選項名", description: "選項說明\n第二行" },
   { type: "newline" },
   {
     key: "選項四",
@@ -16,8 +16,8 @@ const EXAMPLE = [
 const EXAMPLE_INPUT = [
   { key: "選項一", value: true },
   { key: "選項二", value: 42 },
-  { type: "groupLabel", text: "標籤" },
-  { key: "選項三", value: "orz", text: "選項名" },
+  { type: "groupLabel", text: "標籤", description: "分組說明" },
+  { key: "選項三", value: "orz", text: "選項名", description: "選項說明\n第二行" },
   { type: "newline" },
   { key: "忽略", value: null },
   {
@@ -30,8 +30,8 @@ const EXAMPLE_INPUT = [
 const EXAMPLE_COMPACT_INPUT = [
   ["選項一", true],
   ["選項二", 42],
-  "標籤",
-  ["選項三|選項名", "orz"],
+  "標籤\n分組說明",
+  ["選項三|選項名\n選項說明\n第二行", "orz"],
   "",
   ["忽略", null],
   ["選項四", [1, "好耶", { value: "壞耶", text: "噫（" }, 42, null]],
@@ -56,8 +56,8 @@ test("clone, set, 選項", () => {
   expect(設定.set("選項四", "壞耶").列表).toEqual([
     { key: "選項一", value: true },
     { key: "選項二", value: 42 },
-    { type: "groupLabel", text: "標籤" },
-    { key: "選項三", value: "orz", text: "選項名" },
+    { type: "groupLabel", text: "標籤", description: "分組說明" },
+    { key: "選項三", value: "orz", text: "選項名", description: "選項說明\n第二行" },
     { type: "newline" },
     {
       key: "選項四",
@@ -80,8 +80,8 @@ test("with", () => {
   expect(設定.with({ 選項一: false, 選項四: "壞耶" }).列表).toEqual([
     { key: "選項一", value: false },
     { key: "選項二", value: 42 },
-    { type: "groupLabel", text: "標籤" },
-    { key: "選項三", value: "orz", text: "選項名" },
+    { type: "groupLabel", text: "標籤", description: "分組說明" },
+    { key: "選項三", value: "orz", text: "選項名", description: "選項說明\n第二行" },
     { type: "newline" },
     {
       key: "選項四",

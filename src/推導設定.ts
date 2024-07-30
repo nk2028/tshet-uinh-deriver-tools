@@ -3,6 +3,7 @@ export interface Parameter extends Readonly<Record<string, unknown>> {
   readonly value: unknown;
   readonly text?: string;
   readonly options?: unknown[];
+  readonly description?: string;
 }
 export interface Newline {
   readonly type: "newline";
@@ -10,17 +11,22 @@ export interface Newline {
 export interface GroupLabel {
   readonly type: "groupLabel";
   readonly text: string;
+  readonly description?: string;
 }
 export type 設定項 = Parameter | Newline | GroupLabel;
 
-type ParameterMut = {
-  -readonly [x in keyof Parameter]: Parameter[x];
+type Mutable<T> = {
+  -readonly [x in keyof T]: T[x];
 };
+type ParameterMut = Mutable<Parameter>;
+type GroupLabelMut = Mutable<GroupLabel>;
 
 /** `Array.isArray`, but more conservative */
 function isArray(obj: unknown): obj is readonly unknown[] {
   return Array.isArray(obj);
 }
+
+const patternDescSep = /[\n-\r\x85\u2028\u2029]+/u;
 
 // TODO doc
 export default class 推導設定 {
@@ -47,12 +53,20 @@ export default class 推導設定 {
           解析錯誤.push(`item #${i}: key is not a string`);
           return [];
         }
-        const sep = rawKey.indexOf("|");
+        // NOTE Matching against the separator only, not using capturing groups.
+        // This ensures that the string are split properly at the first occurrence of the separator.
+        const descSep = patternDescSep.exec(rawKey);
         let key = rawKey;
+        let description = "";
+        if (descSep) {
+          description = rawKey.slice(descSep.index + descSep[0].length);
+          key = rawKey.slice(0, descSep.index);
+        }
+        const textSep = key.indexOf("|");
         let text = "";
-        if (sep !== -1) {
-          key = rawKey.slice(0, sep);
-          text = rawKey.slice(sep + 1);
+        if (textSep !== -1) {
+          text = key.slice(textSep + 1);
+          key = key.slice(0, textSep);
         }
 
         let value = rawValue;
@@ -76,6 +90,9 @@ export default class 推導設定 {
         if (text) {
           (原始設定項 as ParameterMut).text = text;
         }
+        if (description) {
+          (原始設定項 as ParameterMut).description = description;
+        }
         if (options !== null) {
           (原始設定項 as ParameterMut).options = options;
         }
@@ -84,7 +101,18 @@ export default class 推導設定 {
       if (原始設定項 === null || 原始設定項 === "") {
         return [{ type: "newline" }];
       } else if (typeof 原始設定項 === "string") {
-        return [{ type: "groupLabel", text: 原始設定項 }];
+        let text = 原始設定項;
+        let description = "";
+        const descSep = patternDescSep.exec(原始設定項);
+        if (descSep) {
+          description = 原始設定項.slice(descSep.index + descSep[0].length);
+          text = 原始設定項.slice(0, descSep.index);
+        }
+        const item: GroupLabel = { type: "groupLabel", text: text };
+        if (description) {
+          (item as GroupLabelMut).description = description;
+        }
+        return [item];
       } else if (typeof 原始設定項 !== "object") {
         解析錯誤.push(`item #${i}: not an object`);
         return [];
