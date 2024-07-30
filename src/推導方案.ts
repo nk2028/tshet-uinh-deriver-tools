@@ -77,7 +77,7 @@ export default class 推導方案<T> extends Function {
    */
   推導(選項: Record<string, unknown> = {}): 推導函數<T> {
     const 方案設定 = this.方案設定(選項);
-    const 實際選項 = { ...方案設定.預設選項, ...選項 };
+    const 實際選項 = { ...方案設定.選項, ...選項 };
 
     const derive = (地位: 音韻地位, 字頭: string | null = null, ...args: unknown[]): T => {
       if (!地位) throw new Error("expect 音韻地位");

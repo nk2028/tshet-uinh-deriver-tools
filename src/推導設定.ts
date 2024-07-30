@@ -1,17 +1,21 @@
-export interface Parameter extends Record<string, unknown> {
-  key: string;
-  default: unknown;
-  text?: string;
-  options?: unknown[];
+export interface Parameter extends Readonly<Record<string, unknown>> {
+  readonly key: string;
+  readonly value: unknown;
+  readonly text?: string;
+  readonly options?: unknown[];
 }
 export interface Newline {
-  type: "newline";
+  readonly type: "newline";
 }
 export interface GroupLabel {
-  type: "groupLabel";
-  text: string;
+  readonly type: "groupLabel";
+  readonly text: string;
 }
 export type 設定項 = Parameter | Newline | GroupLabel;
+
+type ParameterMut = {
+  -readonly [x in keyof Parameter]: Parameter[x];
+}
 
 /** `Array.isArray`, but more conservative */
 function isArray(obj: unknown): obj is readonly unknown[] {
@@ -21,7 +25,7 @@ function isArray(obj: unknown): obj is readonly unknown[] {
 // TODO doc
 export default class 推導設定 {
   readonly 列表: readonly 設定項[];
-  readonly 預設選項: Readonly<Record<string, unknown>>;
+  readonly 選項: Readonly<Record<string, unknown>>;
   readonly 解析錯誤: readonly string[];
 
   constructor(設定列表: readonly unknown[]) {
@@ -34,7 +38,7 @@ export default class 推導設定 {
           解析錯誤.push(`item #${i}: not a valid tuple`);
           return [];
         }
-        const [rawKey, rawDefault, rest = {}] = 原始設定項;
+        const [rawKey, rawValue, rest = {}] = 原始設定項;
         if (!(typeof rest === "object" && rest !== null)) {
           解析錯誤.push(`item #${i}: not an object`);
           return [];
@@ -51,29 +55,29 @@ export default class 推導設定 {
           text = rawKey.slice(sep + 1);
         }
 
-        let defaultValue = rawDefault;
+        let value = rawValue;
         let options = null;
-        if (isArray(rawDefault)) {
-          if (rawDefault.length < 2) {
-            解析錯誤.push(`item #${i}: default value is not a valid list`);
+        if (isArray(rawValue)) {
+          if (rawValue.length < 2) {
+            解析錯誤.push(`item #${i}: value is not a valid list`);
             return [];
           }
-          defaultValue = rawDefault[0];
-          options = rawDefault.slice(1);
+          value = rawValue[0];
+          options = rawValue.slice(1);
           if (
-            typeof defaultValue === "number" &&
-            !options.some(x => x === defaultValue || (x as { value?: unknown })?.value === defaultValue)
+            typeof value === "number" &&
+            !options.some(x => x === value || (x as { value?: unknown })?.value === value)
           ) {
-            defaultValue = defaultValue - 1;
+            value = value - 1;
           }
         }
 
-        原始設定項 = { ...rest, key, default: defaultValue };
+        原始設定項 = { ...rest, key, value };
         if (text) {
-          (原始設定項 as Parameter).text = text;
+          (原始設定項 as ParameterMut).text = text;
         }
         if (options !== null) {
-          (原始設定項 as Parameter).options = options;
+          (原始設定項 as ParameterMut).options = options;
         }
       }
 
@@ -98,8 +102,8 @@ export default class 推導設定 {
           return [];
         }
         seenKeys.add(原始設定項.key);
-        if (!("default" in 原始設定項)) {
-          解析錯誤.push(`item #${i}: missing property 'default' for parameter`);
+        if (!("value" in 原始設定項)) {
+          解析錯誤.push(`item #${i}: missing property 'value' for parameter`);
           return [];
         }
         const 設定項 = { ...原始設定項 };
@@ -129,22 +133,22 @@ export default class 推導設定 {
             parsedOptions.push({ ...option });
           }
 
-          if (!parsedOptions.some(option => option.value === 設定項.default)) {
-            if (typeof 設定項.default === "number" && 0 <= 設定項.default && 設定項.default < parsedOptions.length) {
-              設定項.default = parsedOptions[設定項.default]!.value;
+          if (!parsedOptions.some(option => option.value === 設定項.value)) {
+            if (typeof 設定項.value === "number" && 0 <= 設定項.value && 設定項.value < parsedOptions.length) {
+              設定項.value = parsedOptions[設定項.value]!.value;
             } else {
-              解析錯誤.push(`item #${i}: unknown default value`);
+              解析錯誤.push(`item #${i}: value not in options`);
               return [];
             }
           }
           設定項.options = parsedOptions;
         } else {
-          if (設定項.default == null) {
+          if (設定項.value == null) {
             // 忽略此項，且不記入錯誤
             return [];
           }
-          if (!["string", "number", "boolean"].includes(typeof 設定項.default)) {
-            解析錯誤.push(`item #${i}: unsupported value type: ${typeof 設定項.default}`);
+          if (!["string", "number", "boolean"].includes(typeof 設定項.value)) {
+            解析錯誤.push(`item #${i}: unsupported value type: ${typeof 設定項.value}`);
             return [];
           }
         }
@@ -174,22 +178,22 @@ export default class 推導設定 {
     const 預設選項: Record<string, unknown> = {};
     for (const item of this.列表) {
       if ("key" in item) {
-        預設選項[item.key] = item.default;
+        預設選項[item.key] = item.value;
       }
     }
-    this.預設選項 = 預設選項;
+    this.選項 = 預設選項;
   }
 
   clone(): 推導設定 {
     return new 推導設定(this.列表);
   }
 
-  setDefault(key: string, value: unknown): 推導設定 {
+  set(key: string, value: unknown): 推導設定 {
     let found = false;
     const newList = this.列表.map(item => {
       if ("key" in item && item.key === key) {
         found = true;
-        return { ...item, default: value };
+        return { ...item, value: value };
       } else {
         return item;
       }

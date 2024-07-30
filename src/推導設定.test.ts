@@ -1,28 +1,28 @@
 import 推導設定 from "./推導設定";
 
 const EXAMPLE = [
-  { key: "選項一", default: true },
-  { key: "選項二", default: 42 },
+  { key: "選項一", value: true },
+  { key: "選項二", value: 42 },
   { type: "groupLabel", text: "標籤" },
-  { key: "選項三", default: "orz", text: "選項名" },
+  { key: "選項三", value: "orz", text: "選項名" },
   { type: "newline" },
   {
     key: "選項四",
-    default: "好耶",
+    value: "好耶",
     options: [{ value: "好耶" }, { value: "壞耶", text: "噫（" }, { value: 42 }, { value: null }],
   },
 ] as const;
 
 const EXAMPLE_INPUT = [
-  { key: "選項一", default: true },
-  { key: "選項二", default: 42 },
+  { key: "選項一", value: true },
+  { key: "選項二", value: 42 },
   { type: "groupLabel", text: "標籤" },
-  { key: "選項三", default: "orz", text: "選項名" },
+  { key: "選項三", value: "orz", text: "選項名" },
   { type: "newline" },
-  { key: "忽略", default: null },
+  { key: "忽略", value: null },
   {
     key: "選項四",
-    default: 0,
+    value: 0,
     options: [{ value: "好耶" }, { value: "壞耶", text: "噫（" }, { value: 42 }, { value: null }],
   },
 ] as const;
@@ -53,25 +53,25 @@ test("複製、調整預設值、預設選項", () => {
   const 設定 = new 推導設定(EXAMPLE);
   expect(設定.列表).toEqual(EXAMPLE);
   expect(設定.clone().列表).toEqual(EXAMPLE);
-  expect(設定.setDefault("選項四", "壞耶").列表).toEqual([
-    { key: "選項一", default: true },
-    { key: "選項二", default: 42 },
+  expect(設定.set("選項四", "壞耶").列表).toEqual([
+    { key: "選項一", value: true },
+    { key: "選項二", value: 42 },
     { type: "groupLabel", text: "標籤" },
-    { key: "選項三", default: "orz", text: "選項名" },
+    { key: "選項三", value: "orz", text: "選項名" },
     { type: "newline" },
     {
       key: "選項四",
-      default: "壞耶",
+      value: "壞耶",
       options: [{ value: "好耶" }, { value: "壞耶", text: "噫（" }, { value: 42 }, { value: null }],
     },
   ] as const);
-  expect(設定.setDefault("選項四", "壞耶").預設選項).toEqual({
+  expect(設定.set("選項四", "壞耶").選項).toEqual({
     選項一: true,
     選項二: 42,
     選項三: "orz",
     選項四: "壞耶",
   });
-  // `setDefault` does not alter the original object
+  // `.set` does not alter the original object
   expect(設定.列表).toEqual(EXAMPLE);
 });
 
