@@ -241,6 +241,9 @@ export default class 推導設定 {
     const newList = this.列表.map(item => {
       if ("key" in item && Object.prototype.hasOwnProperty.call(entries, item.key)) {
         const value = entries[item.key];
+        if (value === undefined) {
+          return item;
+        }
         if (
           "options" in item &&
           !item.options.some(option => option.value === value) &&

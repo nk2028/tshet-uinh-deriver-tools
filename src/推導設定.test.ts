@@ -90,6 +90,7 @@ test("with", () => {
     },
   ] as const);
   expect(設定.with({}).列表).toEqual(EXAMPLE);
+  expect(設定.with({ 選項一: undefined }).列表).toEqual(EXAMPLE);
   // `.with` does not alter the original object
   expect(設定.列表).toEqual(EXAMPLE);
 });
