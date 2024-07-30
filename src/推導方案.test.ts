@@ -11,7 +11,7 @@ type MockOptions = Partial<{
   Record<string, unknown>;
 
 function mock(選項?: MockOptions): unknown[];
-function mock(選項: MockOptions, 地位: 音韻地位, ...rest: unknown[]): string;
+function mock(選項: MockOptions, 地位: 音韻地位): string;
 function mock(選項: MockOptions = {}, 地位?: 音韻地位): unknown[] | string {
   if (!地位) {
     const params: unknown[] = [

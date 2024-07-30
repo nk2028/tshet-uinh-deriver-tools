@@ -4,30 +4,30 @@ import 推導設定 from "./推導設定";
 
 export type 選項 = Record<string, unknown>;
 
-export interface 原始推導函數<T> {
+export interface 原始推導函數<T, U extends unknown[] = unknown[]> {
   (選項?: 選項): unknown[];
-  (選項: 選項, 地位: 音韻地位, 字頭: string | null, ...rest: unknown[]): T;
+  (選項: 選項, 地位: 音韻地位, 字頭: string | null, ...rest: U): T;
 }
 
-export interface 推導函數<T> {
-  (地位: 音韻地位, 字頭?: string | null, ...args: unknown[]): T;
-  readonly 方案: 推導方案<T>;
+export interface 推導函數<T, U extends unknown[] = unknown[]> {
+  (地位: 音韻地位, 字頭?: string | null, ...args: U): T;
+  readonly 方案: 推導方案<T, U>;
 }
 
-export default interface 推導方案<T> {
+export default interface 推導方案<T, U extends unknown[] = unknown[]> {
   // eslint-disable-next-line @typescript-eslint/prefer-function-type
-  (...args: Parameters<推導方案<T>["推導"]>): ReturnType<推導方案<T>["推導"]>;
+  (...args: Parameters<推導方案<T, U>["推導"]>): ReturnType<推導方案<T, U>["推導"]>;
 }
 
 /**
  * 包裝了原始的推導方案代碼的對象，可以方便地從 JS 調用。
  */
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
-export default class 推導方案<T> extends Function {
-  constructor(readonly 原始推導函數: 原始推導函數<T>) {
+export default class 推導方案<T, U extends unknown[] = unknown[]> extends Function {
+  constructor(readonly 原始推導函數: 原始推導函數<T, U>) {
     super();
     const proxy: this = new Proxy(this, {
-      apply(_target, _thisArg, args: Parameters<推導方案<T>["推導"]>) {
+      apply(_target, _thisArg, args: Parameters<推導方案<T, U>["推導"]>) {
         // NOTE Don't use `target.推導`,
         // because `this` in `推導` should refer to the proxied object, not the original.
         return proxy.推導(...args);
@@ -75,11 +75,11 @@ export default class 推導方案<T> extends Function {
    * 方案({ 模式: '標準', 脣音咍韻歸灰韻: false })(地位, '倍'); // => 'beojq'
    * ```
    */
-  推導(選項: Record<string, unknown> = {}): 推導函數<T> {
+  推導(選項: Record<string, unknown> = {}): 推導函數<T, U> {
     const 方案設定 = this.方案設定(選項);
     const 實際選項 = { ...方案設定.選項, ...選項 };
 
-    const derive = (地位: 音韻地位, 字頭: string | null = null, ...args: unknown[]): T => {
+    const derive = (地位: 音韻地位, 字頭: string | null = null, ...args: U): T => {
       if (!地位) throw new Error("expect 音韻地位");
       try {
         return this.原始推導函數(實際選項, 地位, 字頭, ...args);
