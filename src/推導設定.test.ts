@@ -94,6 +94,13 @@ test("with", () => {
   expect(設定.列表).toEqual(EXAMPLE);
 });
 
+test("with 與選單參數", () => {
+  const 設定 = new 推導設定(EXAMPLE);
+  const 修改後 = 設定.with({ 選項四: "不存在項" });
+  expect(修改後.解析錯誤).toEqual([]);
+  expect(修改後.列表).toEqual(EXAMPLE);
+});
+
 test("JSON 格式", () => {
   const 設定 = new 推導設定(EXAMPLE);
   expect(JSON.stringify(設定)).toBe(JSON.stringify(EXAMPLE));

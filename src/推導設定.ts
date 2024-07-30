@@ -220,6 +220,7 @@ export default class 推導設定 {
     return new 推導設定(this.列表);
   }
 
+  // TODO 是否仍需要？若需要的話，是否應當驗證選單型的值？
   set(key: string, value: unknown): 推導設定 {
     let found = false;
     const newList = this.列表.map(item => {
@@ -239,7 +240,15 @@ export default class 推導設定 {
   with(entries: Record<string, unknown>): 推導設定 {
     const newList = this.列表.map(item => {
       if ("key" in item && Object.prototype.hasOwnProperty.call(entries, item.key)) {
-        return { ...item, value: entries[item.key] };
+        const value = entries[item.key];
+        if (
+          "options" in item &&
+          !item.options.some(option => option.value === value) &&
+          !(typeof value === "number" && value in item.options)
+        ) {
+          return item;
+        }
+        return { ...item, value };
       } else {
         return item;
       }
