@@ -21,6 +21,7 @@ function isArray(obj: unknown): obj is readonly unknown[] {
 // TODO doc
 export default class 推導設定 {
   readonly 列表: readonly 設定項[];
+  readonly 預設選項: Readonly<Record<string, unknown>>;
   readonly 解析錯誤: readonly string[];
 
   constructor(設定列表: readonly unknown[]) {
@@ -169,16 +170,14 @@ export default class 推導設定 {
       }
     });
     this.解析錯誤 = 解析錯誤;
-  }
 
-  預設選項(): Record<string, unknown> {
-    const 選項: Record<string, unknown> = {};
+    const 預設選項: Record<string, unknown> = {};
     for (const item of this.列表) {
       if ("key" in item) {
-        選項[item.key] = item.default;
+        預設選項[item.key] = item.default;
       }
     }
-    return 選項;
+    this.預設選項 = 預設選項;
   }
 
   clone(): 推導設定 {
