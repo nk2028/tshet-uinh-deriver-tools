@@ -15,7 +15,7 @@ export type 設定項 = Parameter | Newline | GroupLabel;
 
 type ParameterMut = {
   -readonly [x in keyof Parameter]: Parameter[x];
-}
+};
 
 /** `Array.isArray`, but more conservative */
 function isArray(obj: unknown): obj is readonly unknown[] {
@@ -201,6 +201,17 @@ export default class 推導設定 {
     if (!found) {
       throw new Error(`key not found: ${JSON.stringify(key)}`);
     }
+    return new 推導設定(newList);
+  }
+
+  with(entries: Record<string, unknown>): 推導設定 {
+    const newList = this.列表.map(item => {
+      if ("key" in item && Object.prototype.hasOwnProperty.call(entries, item.key)) {
+        return { ...item, value: entries[item.key] };
+      } else {
+        return item;
+      }
+    });
     return new 推導設定(newList);
   }
 

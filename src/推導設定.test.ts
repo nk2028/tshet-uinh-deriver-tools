@@ -49,7 +49,7 @@ test("建立設定（簡略形式）", () => {
   expect(設定.列表).toEqual(EXAMPLE);
 });
 
-test("複製、調整預設值、預設選項", () => {
+test("clone, set, 選項", () => {
   const 設定 = new 推導設定(EXAMPLE);
   expect(設定.列表).toEqual(EXAMPLE);
   expect(設定.clone().列表).toEqual(EXAMPLE);
@@ -72,6 +72,25 @@ test("複製、調整預設值、預設選項", () => {
     選項四: "壞耶",
   });
   // `.set` does not alter the original object
+  expect(設定.列表).toEqual(EXAMPLE);
+});
+
+test("with", () => {
+  const 設定 = new 推導設定(EXAMPLE);
+  expect(設定.with({ 選項一: false, 選項四: "壞耶" }).列表).toEqual([
+    { key: "選項一", value: false },
+    { key: "選項二", value: 42 },
+    { type: "groupLabel", text: "標籤" },
+    { key: "選項三", value: "orz", text: "選項名" },
+    { type: "newline" },
+    {
+      key: "選項四",
+      value: "壞耶",
+      options: [{ value: "好耶" }, { value: "壞耶", text: "噫（" }, { value: 42 }, { value: null }],
+    },
+  ] as const);
+  expect(設定.with({}).列表).toEqual(EXAMPLE);
+  // `.with` does not alter the original object
   expect(設定.列表).toEqual(EXAMPLE);
 });
 
