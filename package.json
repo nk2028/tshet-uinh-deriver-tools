@@ -1,6 +1,6 @@
 {
   "name": "tshet-uinh-deriver-tools",
-  "version": "0.2.0-beta.2",
+  "version": "0.2.0-beta.3",
   "description": "Utilities for Qieyun.js derivers",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/nk2028/tshet-uinh-deriver-tools#readme",
   "peerDependencies": {
-    "qieyun": "0.15.x"
+    "qieyun": "^0.15.0-beta"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.1.0",
