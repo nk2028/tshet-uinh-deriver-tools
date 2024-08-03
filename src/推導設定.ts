@@ -217,24 +217,9 @@ export default class 推導設定 {
   }
 
   clone(): 推導設定 {
-    return new 推導設定(this.列表);
-  }
-
-  // TODO 是否仍需要？若需要的話，是否應當驗證選單型的值？
-  set(key: string, value: unknown): 推導設定 {
-    let found = false;
-    const newList = this.列表.map(item => {
-      if ("key" in item && item.key === key) {
-        found = true;
-        return { ...item, value: value };
-      } else {
-        return item;
-      }
-    });
-    if (!found) {
-      throw new Error(`key not found: ${JSON.stringify(key)}`);
-    }
-    return new 推導設定(newList);
+    const cloned = new 推導設定(this.列表);
+    (cloned as unknown as { 解析錯誤: string[] }).解析錯誤 = [...this.解析錯誤];
+    return cloned;
   }
 
   with(entries: Record<string, unknown>): 推導設定 {
@@ -256,7 +241,9 @@ export default class 推導設定 {
         return item;
       }
     });
-    return new 推導設定(newList);
+    const modified = new 推導設定(newList);
+    (modified as unknown as { 解析錯誤: string[] }).解析錯誤 = [...this.解析錯誤];
+    return modified;
   }
 
   toJSON(): readonly 設定項[] {

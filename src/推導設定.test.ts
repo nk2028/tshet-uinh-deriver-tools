@@ -37,6 +37,9 @@ const EXAMPLE_COMPACT_INPUT = [
   ["選項四", [1, "好耶", { value: "壞耶", text: "噫（" }, 42, null]],
 ] as const;
 
+const EXAMPLE_INCORRECT = [["選項一", true], ["不正確項"], ["選項二", 42]] as const;
+const EXAMPLE_INCORRECT_MSGS = ["item #1: not a valid tuple"] as const;
+
 test("建立設定（基本形式）", () => {
   const 設定 = new 推導設定(EXAMPLE_INPUT);
   expect(設定.解析錯誤).toEqual([]);
@@ -49,33 +52,19 @@ test("建立設定（簡略形式）", () => {
   expect(設定.列表).toEqual(EXAMPLE);
 });
 
-test("clone, set, 選項", () => {
+test("clone", () => {
   const 設定 = new 推導設定(EXAMPLE);
   expect(設定.列表).toEqual(EXAMPLE);
   expect(設定.clone().列表).toEqual(EXAMPLE);
-  expect(設定.set("選項四", "壞耶").列表).toEqual([
-    { key: "選項一", value: true },
-    { key: "選項二", value: 42 },
-    { type: "groupLabel", text: "標籤", description: "分組說明" },
-    { key: "選項三", value: "orz", text: "選項名", description: "選項說明\n第二行" },
-    { type: "newline" },
-    {
-      key: "選項四",
-      value: "壞耶",
-      options: [{ value: "好耶" }, { value: "壞耶", text: "噫（" }, { value: 42 }, { value: null }],
-    },
-  ] as const);
-  expect(設定.set("選項四", "壞耶").選項).toEqual({
-    選項一: true,
-    選項二: 42,
-    選項三: "orz",
-    選項四: "壞耶",
-  });
-  // `.set` does not alter the original object
-  expect(設定.列表).toEqual(EXAMPLE);
+
+  const 不正確設定 = new 推導設定(EXAMPLE_INCORRECT);
+  expect(不正確設定.解析錯誤).toEqual(EXAMPLE_INCORRECT_MSGS);
+  const clone = 不正確設定.clone();
+  expect(clone.列表).toEqual(不正確設定.列表);
+  expect(clone.解析錯誤).toEqual(不正確設定.解析錯誤);
 });
 
-test("with", () => {
+test("with, 選項", () => {
   const 設定 = new 推導設定(EXAMPLE);
   expect(設定.with({ 選項一: false, 選項四: "壞耶" }).列表).toEqual([
     { key: "選項一", value: false },
@@ -89,10 +78,21 @@ test("with", () => {
       options: [{ value: "好耶" }, { value: "壞耶", text: "噫（" }, { value: 42 }, { value: null }],
     },
   ] as const);
+  expect(設定.with({ 選項四: "壞耶" }).選項).toEqual({
+    選項一: true,
+    選項二: 42,
+    選項三: "orz",
+    選項四: "壞耶",
+  });
   expect(設定.with({}).列表).toEqual(EXAMPLE);
   expect(設定.with({ 選項一: undefined }).列表).toEqual(EXAMPLE);
   // `.with` does not alter the original object
   expect(設定.列表).toEqual(EXAMPLE);
+
+  const 不正確設定 = new 推導設定(EXAMPLE_INCORRECT);
+  const modified = 不正確設定.with({ 選項一: false });
+  expect(modified.選項).toEqual({ 選項一: false, 選項二: 42 });
+  expect(modified.解析錯誤).toEqual(不正確設定.解析錯誤);
 });
 
 test("with 與選單參數", () => {
