@@ -42,6 +42,7 @@ export default class 推導設定 {
     const 解析錯誤: string[] = [];
     const seenKeys = new Set<string>();
     this.列表 = 設定列表.flatMap((原始設定項, i): 設定項[] => {
+      let valueIsIndex = false;
       if (isArray(原始設定項)) {
         // 以陣列格式指定的參數，轉換為物件格式
         if (原始設定項.length !== 2 && 原始設定項.length !== 3) {
@@ -84,10 +85,10 @@ export default class 推導設定 {
           options = rawValue.slice(1);
           if (
             typeof value === "number" &&
-            !options.some(x => x === value || (x as { value?: unknown })?.value === value)
+            !options.some(x => x === value || (typeof x === "object" && x && "value" in x && x.value === value))
           ) {
             value = value - 1;
-            // FIXME this is not quite right
+            valueIsIndex = true;
           }
         }
 
@@ -168,7 +169,7 @@ export default class 推導設定 {
             parsedOptions.push({ ...option });
           }
 
-          if (!parsedOptions.some(option => option.value === 設定項.value)) {
+          if (valueIsIndex || !parsedOptions.some(option => option.value === 設定項.value)) {
             if (typeof 設定項.value === "number" && 0 <= 設定項.value && 設定項.value < parsedOptions.length) {
               設定項.value = parsedOptions[設定項.value]!.value;
             } else {

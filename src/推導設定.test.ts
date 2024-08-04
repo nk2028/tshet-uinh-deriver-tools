@@ -55,6 +55,11 @@ test("建立設定（簡略形式）", () => {
   expect(設定.列表).toEqual(EXAMPLE);
 });
 
+test("選單項（緊湊格式下標）", () => {
+  const 設定 = new 推導設定([["param1", [2, 42, 43, 1]]]);
+  expect(設定.列表).toHaveProperty(["0", "value"], 43);
+});
+
 test("clone", () => {
   const 設定 = new 推導設定(EXAMPLE);
   expect(設定.列表).toEqual(EXAMPLE);
