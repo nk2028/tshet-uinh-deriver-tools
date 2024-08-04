@@ -15,6 +15,7 @@ const EXAMPLE = [
 
 const EXAMPLE_INPUT = [
   { key: "選項一", value: true },
+  undefined, // 此項忽略
   { key: "選項二", value: 42 },
   { type: "groupLabel", text: "標籤", description: "分組說明" },
   { key: "選項三", value: "orz", text: "選項名", description: "選項說明\n第二行" },

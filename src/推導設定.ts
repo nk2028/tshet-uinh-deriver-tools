@@ -102,7 +102,10 @@ export default class 推導設定 {
         }
       }
 
-      if (原始設定項 === null || 原始設定項 === "") {
+      if (原始設定項 === undefined) {
+        // 忽略此項，且不記入錯誤
+        return [];
+      } else if (原始設定項 === null || 原始設定項 === "") {
         return [{ type: "newline" }];
       } else if (typeof 原始設定項 === "string") {
         let text = 原始設定項;
