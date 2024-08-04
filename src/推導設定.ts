@@ -187,7 +187,7 @@ export default class 推導設定 {
 
         return [設定項 as Parameter];
       } else if (!("type" in 原始設定項)) {
-        解析錯誤.push(`item #${i}: missing type`);
+        解析錯誤.push(`item #${i}: missing type or key`);
         return [];
       } else if (原始設定項.type === "groupLabel") {
         if (!("text" in 原始設定項)) {
