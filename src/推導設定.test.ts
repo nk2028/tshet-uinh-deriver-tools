@@ -21,6 +21,7 @@ const EXAMPLE_INPUT = [
   { key: "選項三", value: "orz", text: "選項名", description: "選項說明\n第二行" },
   { type: "newline" },
   { key: "忽略", value: null },
+  { key: "忽略", value: undefined }, // 忽略所以不算重複 key
   {
     key: "選項四",
     value: 0,
@@ -35,6 +36,7 @@ const EXAMPLE_COMPACT_INPUT = [
   ["選項三|選項名\n選項說明\n第二行", "orz"],
   "",
   ["忽略", null],
+  ["忽略", undefined],
   ["選項四", [1, "好耶", { value: "壞耶", text: "噫（" }, 42, null]],
 ] as const;
 

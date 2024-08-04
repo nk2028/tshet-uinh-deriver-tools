@@ -87,6 +87,7 @@ export default class 推導設定 {
             !options.some(x => x === value || (x as { value?: unknown })?.value === value)
           ) {
             value = value - 1;
+            // FIXME this is not quite right
           }
         }
 
@@ -136,7 +137,6 @@ export default class 推導設定 {
           解析錯誤.push(`item #${i}: duplicate key: ${原始設定項.key}`);
           return [];
         }
-        seenKeys.add(原始設定項.key);
         if (!("value" in 原始設定項)) {
           解析錯誤.push(`item #${i}: missing property 'value' for parameter`);
           return [];
@@ -188,6 +188,7 @@ export default class 推導設定 {
           }
         }
 
+        seenKeys.add(原始設定項.key);
         return [設定項 as Parameter];
       } else if (!("type" in 原始設定項)) {
         解析錯誤.push(`item #${i}: missing type or key`);
