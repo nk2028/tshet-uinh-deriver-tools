@@ -134,10 +134,6 @@ export default class 推導設定 {
           解析錯誤.push(`item #${i}: empty key`);
           return [];
         }
-        if (seenKeys.has(原始設定項.key)) {
-          解析錯誤.push(`item #${i}: duplicate key: ${原始設定項.key}`);
-          return [];
-        }
         if (!("value" in 原始設定項)) {
           解析錯誤.push(`item #${i}: missing property 'value' for parameter`);
           return [];
@@ -189,6 +185,10 @@ export default class 推導設定 {
           }
         }
 
+        if (seenKeys.has(原始設定項.key)) {
+          解析錯誤.push(`item #${i}: duplicate key: ${原始設定項.key}`);
+          return [];
+        }
         seenKeys.add(原始設定項.key);
         return [設定項 as Parameter];
       } else if (!("type" in 原始設定項)) {

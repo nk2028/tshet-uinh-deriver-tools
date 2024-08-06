@@ -60,6 +60,14 @@ test("選單項（緊湊格式下標）", () => {
   expect(設定.列表).toHaveProperty(["0", "value"], 43);
 });
 
+test("忽略項與未忽略項重名", () => {
+  const 設定 = new 推導設定([
+    ["param1", true],
+    ["param1", null],
+  ]);
+  expect(設定.解析錯誤).toEqual([]);
+});
+
 test("clone", () => {
   const 設定 = new 推導設定(EXAMPLE);
   expect(設定.列表).toEqual(EXAMPLE);
