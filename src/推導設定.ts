@@ -85,7 +85,9 @@ export default class 推導設定 {
           options = rawValue.slice(1);
           if (
             typeof value === "number" &&
-            !options.some(x => x === value || (typeof x === "object" && x && "value" in x && x.value === value))
+            !options.some(
+              x => Object.is(x, value) || (typeof x === "object" && x && "value" in x && Object.is(x.value, value)),
+            )
           ) {
             value = value - 1;
             valueIsIndex = true;
@@ -165,7 +167,7 @@ export default class 推導設定 {
             parsedOptions.push({ ...option });
           }
 
-          if (valueIsIndex || !parsedOptions.some(option => option.value === 設定項.value)) {
+          if (valueIsIndex || !parsedOptions.some(option => Object.is(option.value, 設定項.value))) {
             if (typeof 設定項.value === "number" && 0 <= 設定項.value && 設定項.value < parsedOptions.length) {
               設定項.value = parsedOptions[設定項.value]!.value;
             } else {
@@ -236,7 +238,7 @@ export default class 推導設定 {
         }
         if (
           "options" in item &&
-          !item.options.some(option => option.value === value) &&
+          !item.options.some(option => Object.is(option.value, value)) &&
           !(typeof value === "number" && value in item.options)
         ) {
           return item;

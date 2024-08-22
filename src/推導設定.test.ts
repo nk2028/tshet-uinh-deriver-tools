@@ -123,3 +123,13 @@ test("JSON 格式", () => {
   expect(JSON.stringify(設定)).toBe(JSON.stringify(EXAMPLE));
   expect(String(設定)).toBe(JSON.stringify(EXAMPLE));
 });
+
+test("值相等判斷", () => {
+  const 設定 = new 推導設定([
+    ["選項一", [NaN, 1, NaN, 2]],
+    ["選項二", [-0, 1, 0, -0]],
+  ]);
+  expect(設定.解析錯誤).toEqual([]);
+  expect(設定.列表[0]).toHaveProperty("value", NaN);
+  expect(設定.列表[1]).toHaveProperty("value", -0);
+});
