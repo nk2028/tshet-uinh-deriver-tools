@@ -1,4 +1,4 @@
-import { 音韻地位 } from "qieyun";
+import { 音韻地位 } from "tshet-uinh";
 
 import type { 原始推導函數 } from "./推導方案";
 import 推導方案 from "./推導方案";

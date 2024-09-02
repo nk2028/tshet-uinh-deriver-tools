@@ -1,4 +1,4 @@
-import type { 音韻地位 } from "qieyun";
+import type { 音韻地位 } from "tshet-uinh";
 
 import 推導設定 from "./推導設定";
 
@@ -62,7 +62,7 @@ export default class 推導方案<T, U extends unknown[] = unknown[]> extends Fu
    * 【提示】`推導方案` 對象也可以直接調用，效果等同於 `.推導`。
    *
    * ```typescript
-   * const from = Qieyun.音韻地位.from描述;
+   * const from = TshetUinh.音韻地位.from描述;
    *
    * const 方案 = new 推導方案(舊版TUPA原始推導函數);
    *

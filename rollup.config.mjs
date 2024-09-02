@@ -12,10 +12,10 @@ export default {
     name: "TshetUinhDeriverTools",
     exports: "named",
     globals: {
-      qieyun: "Qieyun",
+      "tshet-uinh": "TshetUinh",
     },
   },
-  external: ["qieyun"],
+  external: ["tshet-uinh"],
   plugins: [
     typescript({
       // NOTE needed with `incremental: true` in tsconfig.json

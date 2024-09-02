@@ -25,11 +25,11 @@ return 選項.前綴 + ":" + (選項.簡略描述 ? 音韻地位.簡略描述 : 
 
 ```js
 import { 推導方案 } from "tshet-uinh-deriver-tools";
-import * as Qieyun from "qieyun";
+import TshetUinh from "tshet-uinh";
 
-const from = Qieyun.音韻地位.from描述;
+const from = TshetUinh.音韻地位.from描述;
 
-const 原始方案 = new Function("Qieyun", "選項 = {}", "音韻地位", "字頭 = null", 方案代碼).bind(undefined, Qieyun);
+const 原始方案 = new Function("TshetUinh", "選項 = {}", "音韻地位", "字頭 = null", 方案代碼).bind(undefined, TshetUinh);
 
 const 方案 = new 推導方案(原始方案);
 
@@ -40,7 +40,7 @@ const 方案 = new 推導方案(原始方案);
 // 為了減省原函數調用次數，避免反覆指定並解析相同的選項
 // 可以像這樣指定一次選項後批量推導
 const 以預設選項推導 = 方案(); // 預設選項
-for (const 地位 of Qieyun.資料.iter音韻地位()) {
+for (const 地位 of TshetUinh.資料.iter音韻地位()) {
   以預設選項推導(地位);
 }
 
