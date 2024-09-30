@@ -13,7 +13,13 @@
     "type": "git",
     "url": "git+https://github.com/nk2028/tshet-uinh-deriver-tools.git"
   },
-  "keywords": [],
+  "keywords": [
+    "historical-linguistics",
+    "linguistics",
+    "middle-chinese",
+    "tshet-uinh",
+    "qieyun"
+  ],
   "author": "Project NK2028",
   "license": "MIT",
   "bugs": {
