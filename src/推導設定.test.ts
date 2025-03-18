@@ -82,18 +82,20 @@ test("clone", () => {
 
 test("with, 選項", () => {
   const 設定 = new 推導設定(EXAMPLE);
-  expect(設定.with({ 選項一: false, 選項四: "壞耶" }).列表).toEqual([
-    { key: "選項一", value: false },
-    { key: "選項二", value: 42 },
-    { type: "groupLabel", text: "標籤", description: "分組說明" },
-    { key: "選項三", value: "orz", text: "選項名", description: "選項說明\n第二行" },
-    { type: "newline" },
-    {
-      key: "選項四",
-      value: "壞耶",
-      options: [{ value: "好耶" }, { value: "壞耶", text: "噫（" }, { value: 42 }, { value: null }],
-    },
-  ] as const);
+  expect(設定.with({ 選項一: false, 選項四: "壞耶" }).列表).toEqual(
+    [
+      { key: "選項一", value: false },
+      { key: "選項二", value: 42 },
+      { type: "groupLabel", text: "標籤", description: "分組說明" },
+      { key: "選項三", value: "orz", text: "選項名", description: "選項說明\n第二行" },
+      { type: "newline" },
+      {
+        key: "選項四",
+        value: "壞耶",
+        options: [{ value: "好耶" }, { value: "壞耶", text: "噫（" }, { value: 42 }, { value: null }],
+      },
+    ] as const,
+  );
   expect(設定.with({ 選項四: "壞耶" }).選項).toEqual({
     選項一: true,
     選項二: 42,

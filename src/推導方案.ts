@@ -1,4 +1,6 @@
-import type { 音韻地位 } from "tshet-uinh";
+/* eslint-disable import/export -- multiple default exports intended */
+
+import { 音韻地位 } from "tshet-uinh";
 
 import 推導設定 from "./推導設定";
 
@@ -80,7 +82,7 @@ export default class 推導方案<T, U extends unknown[] = unknown[]> extends Fu
     const 實際選項 = { ...方案設定.選項, ...選項 };
 
     const derive = (地位: 音韻地位, 字頭: string | null = null, ...args: U): T => {
-      if (!地位) throw new Error("expect 音韻地位");
+      if ((地位 as unknown) == null) throw new Error("expect 音韻地位");
       try {
         return this.原始推導函數(實際選項, 地位, 字頭, ...args);
       } catch (err) {

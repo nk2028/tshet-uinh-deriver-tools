@@ -84,8 +84,8 @@ export default class 推導設定 {
           value = rawValue[0];
           options = rawValue.slice(1);
           if (
-            typeof value === "number" &&
-            !options.some(
+            typeof value === "number"
+            && !options.some(
               x => Object.is(x, value) || (typeof x === "object" && x && "value" in x && Object.is(x.value, value)),
             )
           ) {
@@ -154,8 +154,9 @@ export default class 推導設定 {
           const seenValues = new Set();
           const parsedOptions: Option[] = [];
           for (const [j, rawOption] of 設定項.options.entries()) {
-            const option: object =
-              typeof rawOption === "object" && rawOption !== null ? rawOption : { value: rawOption };
+            const option: object = typeof rawOption === "object" && rawOption !== null
+              ? rawOption
+              : { value: rawOption };
             if (!("value" in option)) {
               解析錯誤.push(`item #${i} option #${j}: missing value`);
               return [];
@@ -237,9 +238,9 @@ export default class 推導設定 {
           return item;
         }
         if (
-          "options" in item &&
-          !item.options.some(option => Object.is(option.value, value)) &&
-          !(typeof value === "number" && value in item.options)
+          "options" in item
+          && !item.options.some(option => Object.is(option.value, value))
+          && !(typeof value === "number" && value in item.options)
         ) {
           return item;
         }

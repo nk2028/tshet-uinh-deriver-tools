@@ -3,12 +3,13 @@ import { 音韻地位 } from "tshet-uinh";
 import type { 原始推導函數 } from "./推導方案";
 import 推導方案 from "./推導方案";
 
-type MockOptions = Partial<{
-  前綴: string;
-  高級選項: boolean;
-  簡略描述: boolean;
-}> &
-  Record<string, unknown>;
+type MockOptions =
+  & Partial<{
+    前綴: string;
+    高級選項: boolean;
+    簡略描述: boolean;
+  }>
+  & Record<string, unknown>;
 
 function mock(選項?: MockOptions): unknown[];
 function mock(選項: MockOptions, 地位: 音韻地位): string;
@@ -56,10 +57,12 @@ test("動態選項列表", () => {
 });
 
 test("不處理選項的方案", () => {
-  const 方案 = new 推導方案(((_選項: unknown, 音韻地位: 音韻地位) => {
-    if (音韻地位.屬於`效攝`) return "orz";
-    return "sro";
-  }) as unknown as 原始推導函數<string>);
+  const 方案 = new 推導方案(
+    ((_選項: unknown, 音韻地位: 音韻地位) => {
+      if (音韻地位.屬於`效攝`) return "orz";
+      return "sro";
+    }) as unknown as 原始推導函數<string>,
+  );
   expect(() => 方案()).not.toThrow();
   expect(方案()(音韻地位.from描述("見開一豪平"))).toBe("orz");
 });

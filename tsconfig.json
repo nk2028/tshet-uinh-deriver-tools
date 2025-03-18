@@ -4,10 +4,10 @@
     "target": "ES2020",
     "lib": ["ES2020"],
     "rootDir": "src",
-    "outDir": "./dist",
+    "outDir": "dist",
     "declaration": true,
     //"declarationMap": true,
-    "declarationDir": "./types",
+    "declarationDir": "dist/types",
     "inlineSourceMap": true,
 
     "strict": true,

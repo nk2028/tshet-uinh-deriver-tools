@@ -1,0 +1,12 @@
+{
+  "typescript": {
+    "arrowFunction.useParentheses": "preferNone",
+    "quoteProps": "consistent"
+  },
+  "excludes": [
+    "**/node_modules"
+  ],
+  "plugins": [
+    "https://plugins.dprint.dev/typescript-0.94.0.wasm"
+  ]
+}
