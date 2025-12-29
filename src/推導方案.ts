@@ -1,6 +1,7 @@
+import 推導設定 from "./推導設定";
+
 import type { 音韻地位 } from "tshet-uinh";
 
-import 推導設定 from "./推導設定";
 
 export type 選項 = Record<string, unknown>;
 

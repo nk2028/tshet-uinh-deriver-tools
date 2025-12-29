@@ -31,8 +31,20 @@ export default tseslint.config(
     rules: {
       "eslint-comments/disable-enable-pair": ["error", { allowWholeFile: true }],
       "eslint-comments/no-unused-disable": "error",
-      "import/order": ["error", { "newlines-between": "always", "alphabetize": { order: "asc" } }],
-      "sort-imports": ["error", { ignoreDeclarationSort: true, ignoreCase: true }],
+
+      "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+      "import/order": [
+        "error",
+        {
+          "groups": ["builtin", "external", "parent", "sibling", "index", "type"],
+          "sortTypesGroup": true,
+          "newlines-between": "always",
+          "newlines-between-types": "always",
+          "named": true,
+          "alphabetize": { order: "asc", orderImportKind: "asc", caseInsensitive: true },
+          "warnOnUnassignedImports": true,
+        },
+      ],
     },
   },
   {
