@@ -2,7 +2,6 @@ import 推導設定 from "./推導設定";
 
 import type { 音韻地位 } from "tshet-uinh";
 
-
 export type 選項 = Record<string, unknown>;
 
 export interface 原始推導函數<T, U extends unknown[] = unknown[]> {
